@@ -1,0 +1,50 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  core-tests:
+    name: Core unit tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-dotnet@v5
+        with:
+          dotnet-version: '10.0.x'
+
+      # Scripts/Core 只依賴 System，Tests/Editor 只依賴 NUnit，不需要 Unity 授權就能跑。
+      # 測試專案在 CI 當下產生：Unity 的 .gitignore 會忽略 *.csproj。
+      - name: Create test project
+        run: |
+          mkdir -p "$RUNNER_TEMP/core-tests"
+          cat > "$RUNNER_TEMP/core-tests/CoreTests.csproj" <<'CSPROJ'
+          <Project Sdk="Microsoft.NET.Sdk">
+            <PropertyGroup>
+              <TargetFramework>net10.0</TargetFramework>
+              <LangVersion>9.0</LangVersion>
+              <Nullable>disable</Nullable>
+              <IsPackable>false</IsPackable>
+              <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+            </PropertyGroup>
+            <ItemGroup>
+              <Compile Include="$(ProjectRoot)/Assets/_Project/Scripts/Core/**/*.cs" />
+              <Compile Include="$(ProjectRoot)/Assets/_Project/Tests/Editor/**/*.cs" />
+            </ItemGroup>
+            <ItemGroup>
+              <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+              <PackageReference Include="NUnit" Version="3.14.0" />
+              <PackageReference Include="NUnit3TestAdapter" Version="5.0.0" />
+            </ItemGroup>
+          </Project>
+          CSPROJ
+
+      - name: Test
+        run: dotnet test "$RUNNER_TEMP/core-tests/CoreTests.csproj" -p:ProjectRoot="$GITHUB_WORKSPACE"
