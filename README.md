@@ -1,10 +1,10 @@
 # Risk-Aware Motorcycle Interaction in Mixed Traffic Flow
 
-Unity implementation and ongoing Unity 6 rebuild for the research project **Risk-Aware Motorcycle Interaction in Mixed Traffic Flow via Deep Reinforcement Learning**.
+Unity 6 rebuild for the research project **Risk-Aware Motorcycle Interaction in Mixed Traffic Flow via Deep Reinforcement Learning**.
 
 **Paper:** [DOI: 10.1002/cav.70161](https://doi.org/10.1002/cav.70161) | [Google Scholar](https://scholar.google.com/scholar?q=Risk-Aware+Motorcycle+Interaction+in+Mixed+Traffic+Flow+via+Deep+Reinforcement+Learning)
 
-> **Project status:** active rebuild. The original Unity prototype is being restructured into a testable Unity 6.3 LTS codebase. The current repository provides the simulation foundation and a minimal ML-Agents environment; the full training pipeline and mixed-traffic reproduction are still in progress.
+> **Project status:** active rebuild. The original Unity prototype ([MotorcycleSimulator](https://github.com/frobel0520/MotorcycleSimulator), private, frozen since 2025-07) is being restructured into a testable Unity 6.3 LTS codebase. The current repository provides the simulation foundation and a minimal ML-Agents environment; the full training pipeline and mixed-traffic reproduction are still in progress.
 
 ## Research overview
 
@@ -26,7 +26,7 @@ The published results show collision-free trajectories, responsive deceleration,
 | Motorcycle motion | Kinematic bicycle model with normalized acceleration and steering |
 | Risk perception | Five-ray sensor and numerically stable risk-probability map |
 | Episode management | Goal, collision, boundary, and time-limit termination paths |
-| Validation | Unit tests for PID, IDM, kinematic motion, and risk mapping |
+| Validation | 16 unit tests for PID, IDM, kinematic motion, and risk mapping; run in CI without a Unity licence |
 | Training | Python/PPO configuration and full mixed-traffic curriculum are pending |
 
 ## Repository layout
@@ -40,7 +40,8 @@ Assets/_Project/
 |   |-- Core/      Unity-independent PID, IDM, kinematic, and risk logic
 |   `-- Runtime/   Unity adapters, agents, perception, and scenarios
 `-- Tests/Editor/  Core-domain unit tests
-Docs/              Legacy-project migration audit
+Docs/              Legacy-project migration audit (Legacy-Audit.md)
+.github/workflows/ CI: core unit tests under plain .NET
 ```
 
 ## Getting started
@@ -50,6 +51,10 @@ Docs/              Legacy-project migration audit
 3. Open `Assets/_Project/Scenes/Simulation.unity`.
 4. Press **Play**. Until a trained model is supplied, use `W` / `S` for acceleration and braking and `A` / `D` for steering through the Agent heuristic.
 5. Run **Window > General > Test Runner > EditMode** to validate the Unity-independent core logic.
+
+### Run the core tests without Unity
+
+`Assets/_Project/Scripts/Core` depends only on `System` and the tests only on NUnit, so they also run under plain .NET. GitHub Actions (`.github/workflows/ci.yml`, since 2026-09-16) generates a throwaway test project on each push to `main` and each PR and runs `dotnet test` with .NET 10; the result feeds the Harbor health light. The test project is created at CI time because Unity's `.gitignore` excludes `*.csproj`.
 
 The `Motorcycle Observation Hud` component can be enabled on the motorcycle to inspect the eight current ML observations: normalized speed, five directional risks, and the local goal offset.
 
