@@ -1,12 +1,14 @@
 # Risk-Aware Motorcycle Interaction in Mixed Traffic Flow
 
-Unity 6 rebuild for the research project **Risk-Aware Motorcycle Interaction in Mixed Traffic Flow via Deep Reinforcement Learning**.
+> Unity 6 rebuild for the research project **Risk-Aware Motorcycle Interaction in Mixed Traffic Flow via Deep Reinforcement Learning**.
+
+## Overview
 
 **Paper:** [DOI: 10.1002/cav.70161](https://doi.org/10.1002/cav.70161) | [Google Scholar](https://scholar.google.com/scholar?q=Risk-Aware+Motorcycle+Interaction+in+Mixed+Traffic+Flow+via+Deep+Reinforcement+Learning)
 
 > **Project status:** active rebuild. The original Unity prototype ([MotorcycleSimulator](https://github.com/frobel0520/MotorcycleSimulator), private, frozen since 2025-07) is being restructured into a testable Unity 6.3 LTS codebase. The current repository provides the simulation foundation and a minimal ML-Agents environment; the full training pipeline and mixed-traffic reproduction are still in progress.
 
-## Research overview
+## Main features and content
 
 This work studies how an ego motorcycle can navigate mixed traffic safely and naturally using deep reinforcement learning. It combines:
 
@@ -16,6 +18,22 @@ This work studies how an ego motorcycle can navigate mixed traffic safely and na
 - **Curriculum learning:** traffic complexity is progressively increased to learn robust interaction behaviours in scenes with cars, buses, and motorcycles.
 
 The published results show collision-free trajectories, responsive deceleration, and varied yet structured motorcycle behaviour for animation-oriented mixed-traffic simulation.
+
+## Status and known limitations
+
+Active Unity 6.3 LTS rebuild. The simulation foundation and a minimal ML-Agents environment exist; full training and mixed-traffic reproduction remain in progress.
+
+## License and sources
+
+**Source**
+
+Research reference: [DOI: 10.1002/cav.70161](https://doi.org/10.1002/cav.70161).
+
+**License**
+
+No license has been selected yet. All rights reserved unless stated otherwise.
+
+---
 
 ## Current Unity 6 rebuild
 
@@ -64,27 +82,3 @@ The `Motorcycle Observation Hud` component can be enabled on the motorcycle to i
 - Use MonoBehaviours only as adapters between Unity and the domain model.
 - Store tunable experiment settings in ScriptableObjects rather than hand-wired scene references.
 - Keep episode and scenario ownership outside the RL Agent to prevent monolithic controller scripts.
-
-## Citation
-
-```bibtex
-@article{wei2026riskaware,
-  title   = {Risk-Aware Motorcycle Interaction in Mixed Traffic Flow via Deep Reinforcement Learning},
-  author  = {Wei, Yu-Tsen and Ma, Kuo-Wei and Chen, Guan-Hao and Wong, Sai-Keung},
-  journal = {Computer Animation and Virtual Worlds},
-  volume  = {37},
-  pages   = {e70161},
-  year    = {2026},
-  doi     = {10.1002/cav.70161}
-}
-```
-
-## Authors
-
-Yu-Tsen Wei, Kuo-Wei Ma, Guan-Hao Chen, and Sai-Keung Wong
-
-Department of Computer Science, National Yang Ming Chiao Tung University, Taiwan
-
-## License
-
-No license has been selected yet. All rights reserved unless stated otherwise.
